@@ -31,6 +31,7 @@ window.addEventListener("resize", scaleWorld);
 
 //this function is used to perform required animation before the next repaint
 let score;
+let highScore = 0;
 let lastTime;
 let speedScale;
 
@@ -94,6 +95,11 @@ const updateSpeed = (delta) => {
   speedScale += delta * SPEED_FACTOR;
 };
 
+const updateHighScore = () => {
+   const highScoreElem = document.querySelector('[data-high-score]');
+   highScoreElem.textContent = `HI ${Math.floor(highScore)}`
+}
+
 const updateScore = (delta) => {
   //makes sure score is in integer form
   scoreElement.textContent = Math.floor(score);
@@ -102,6 +108,11 @@ const updateScore = (delta) => {
 };
 // this takes cares of How the game starts
 function handleStart()  {
+  // only show/update highScore after one playthrough
+  if(!!score) {
+    highScore = score > highScore ? score : highScore;
+    updateHighScore(); 
+  }
   score = 0;
   lastTime = null;
   speedScale = 1;
